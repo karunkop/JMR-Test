@@ -1,0 +1,232 @@
+.App {
+    background-color: #030031;
+    min-height: 100vh;
+    color: #f7f6f2;
+}
+/* background-color and text color changes */
+label {
+    color: #f7f6f2 !important;
+}
+.ui.modal,
+.ui.modal .header {
+    background-color: #030031;
+    color: #f7f6f2;
+}
+.ui.card,
+.ui.cards > .card {
+    box-shadow: 0 1px 3px 0 #d4d4d58a, 0 0 0 1px #d4d4d51f;
+}
+.ui.card > .content > .description,
+.ui.cards > .card > .content > .description {
+    color: #f7f6f2;
+}
+.ui.button,
+.ui.button.basic {
+    color: #f7f6f2 !important;
+    background: #a98d41 !important;
+    box-shadow: 0 0 0 1px #a98d41 inset,
+        0 0 0 0 rgb(34 36 38 / 15%) inset !important;
+}
+.ui.basic.button,
+.ui.basic.buttons .button,
+.ui.button.icon {
+    color: #f7f6f2 !important;
+}
+.ui.checkbox label,
+.ui.checkbox + label {
+    color: #f7f6f2 !important;
+}
+
+.ui.segment {
+    background-color: #030031;
+    color: #f7f6f2;
+}
+.ui.accordion .title:not(.ui) {
+    color: #f7f6f2;
+}
+.active.title {
+    color: #f7f6f2;
+}
+.react-date-picker,
+.react-date-picker input {
+    color: #f7f6f2;
+}
+.react-date-picker button line,
+.react-date-picker button rect {
+    stroke: #f7f6f2;
+}
+.ui.input input,
+.ui.header {
+    color: #f7f6f2;
+}
+.ui.input input {
+    background-color: transparent !important;
+    border: 1px solid #f7f6f2 !important;
+    color: #f7f6f2 !important;
+}
+.ui.message {
+    background: none !important;
+    color: #f7f6f2 !important;
+}
+.ui.info.message,
+.ui.info.message .header {
+    color: #39c9f4 !important;
+}
+.ui.negative.message,
+.ui.negative.message .header {
+    color: #ff005e !important;
+}
+.ui.success.message,
+.ui.success.message .header {
+    color: #069f09 !important;
+}
+.ui.warning.message,
+.ui.warning.message .header {
+    color: #b97407 !important;
+}
+textarea {
+    background: transparent !important;
+    border: 1px solid #f7f6f2 !important;
+    color: #f7f6f2 !important;
+}
+.jmr-select .jmr-react-select__control,
+.jmr-select .jmr-react-select__control--is-focused,
+.jmr-select .jmr-react-select__control--is-focused:hover {
+    background: transparent;
+    border-color: hsl(0, 0%, 80%);
+}
+.jmr-select .jmr-react-select__menu {
+    background: #030031;
+    border: 1px solid hsl(0, 0%, 80%);
+}
+.jmr-select .jmr-react-select__single-value {
+    color: #f7f6f2;
+}
+.jmr-select .jmr-react-select__option {
+    color: #f7f6f2;
+}
+.jmr-select
+    .jmr-react-select__option.jmr-react-select__option--is-focused,
+.jmr-select
+    .jmr-react-select__option.jmr-react-select__option--is-selected {
+    color: black;
+}
+
+.ui.steps {
+    border: 1px solid #ffffff3b;
+}
+.ui.segment {
+    border: 1px solid #ffffff3b;
+}
+.ui.steps .step {
+    border-right: 1px solid #a98d41;
+}
+.ui.steps .step,
+.ui.steps .step .content .description {
+    background: #f7f6f2;
+}
+.ui.steps .step.active {
+    background: #f7f6f2;
+    color: #a98d41;
+}
+.ui.steps .step.active i,
+.ui.steps .step.active .title,
+.ui.steps .step.active .description {
+    color: #a98d41 !important;
+}
+.ui.steps .step::after {
+    border-color: #a98d41 !important;
+    background-color: #f7f6f2 !important;
+}
+.ui.label {
+    border: 1px solid transparent;
+}
+.ui.teal.ribbon.label {
+    border-color: #a88d41 !important;
+}
+.ui.teal.label,
+.ui.teal.labels .label {
+    background-color: #f7f6f3 !important;
+    border-color: #a88d41 !important;
+    color: #a88d41 !important;
+}
+
+header {
+    padding: 20px;
+    max-width: 1000px;
+}
+.logo-large {
+    max-width: 200px;
+    max-height: 80px;
+}
+
+img {
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 100%;
+    height: auto;
+}
+
+.center {
+    max-width: 80rem;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.cart-wrapper {
+    /* text-align: center; */
+    padding: 20px;
+}
+
+.text-center {
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+}
+tbody,
+tfoot,
+thead {
+    border: 1px solid #f2f2f2;
+}
+
+tbody tr {
+    border-bottom: 1px solid #f2f2f2;
+    background-color: #fff;
+}
+
+tbody th {
+    padding: 1rem 1.25rem 1.25rem;
+}
+
+tbody td {
+    padding: 0.5rem 1rem 1rem;
+}
+
+#cart td.date {
+    text-align: center;
+}
+
+#cart td.money {
+    text-align: right;
+    font-weight: 700;
+}
+
+.custom-date-picker > div {
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.desc-experience ul {
+    padding-left: 16px;
+}
+
+.input-range__track--active {
+    background: #a88d41;
+}
+
+.input-range__slider {
+    background: #a88d41 !important;
+    border: 1px solid #a88d41 !important;
+}
