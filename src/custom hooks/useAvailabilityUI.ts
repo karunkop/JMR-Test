@@ -96,7 +96,7 @@ const useAvailability = ({
             setServicesOrder(newServicesOrder);
             setUnavailableServices(unavailableServices);
         }
-    }, [arrivalWeekday, servicesExceptions]);
+    }, [arrivalWeekday, servicesExceptions, originalServicesOrder]);
 
     const updateServicesOrder = ({
         oldIndex,

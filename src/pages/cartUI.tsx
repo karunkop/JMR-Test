@@ -21,7 +21,6 @@ import { Controller } from "react-hook-form";
 import useCartUI from "../custom hooks/useCartUI";
 import AvailabilityUI from "../components/availabilityUI";
 import {
-    primaryColor,
     secondaryColor,
 } from "../utility/defaults";
 

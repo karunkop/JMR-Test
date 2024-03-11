@@ -46,7 +46,6 @@ const BookingPage = () => {
                 },
             };
 
-
             window.dataLayer = window.dataLayer || [];
 
             window.dataLayer.push(productData);
@@ -64,7 +63,7 @@ const BookingPage = () => {
                 });
             });
         }
-    }, [orderDetails]);
+    }, [orderDetails, location.search]);
 
     if (isVoucher) {
         return (

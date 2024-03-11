@@ -5,7 +5,6 @@ import {
     Message,
     Segment,
 } from "semantic-ui-react";
-import { secondaryColor } from "../utility/defaults";
 import * as htmlToImage from "html-to-image";
 import download from "downloadjs";
 import queryString from "query-string";
