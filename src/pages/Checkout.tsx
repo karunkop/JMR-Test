@@ -39,29 +39,21 @@ const CheckoutUI = ({
 
     const { isLoading, mutate, isError } = useCreateGuestsAndOrder({
         onSuccess: (guestsAndOrderData) => {
-            const arrivalDate =
-                choosenAvailabilityData?.arrivalDate;
+            const arrivalDate = choosenAvailabilityData?.arrivalDate;
             const queryParams = queryString.stringify({
-                amount: guestsAndOrderData?.orderResponse
-                    .entry.amount,
-                description: `Payment for booking Japanese Mountain Retreat experiences for ${arrivalDate}. Order ID: {{${guestsAndOrderData.orderResponse.entry
-                        .id}}}`,
+                amount: guestsAndOrderData?.orderResponse.entry.amount,
+                description: `Payment for booking Japanese Mountain Retreat experiences for ${arrivalDate}. Order ID: {{${guestsAndOrderData.orderResponse.entry.id}}}`,
                 amount_editable: false,
-                success_url:
-                    process.env.NODE_ENV === "development"
-                        ? `http://localhost:3000/booking/${guestsAndOrderData.orderResponse.entry.id}`
-                        : `https://experience.japanesemountainretreat.com.au/booking/${guestsAndOrderData.orderResponse.entry.id}`,
-                email: guestsAndOrderData.guestsData[0]
-                    ?.entry.email,
+                success_url: `https://main--karunkop.netlify.app/booking/${guestsAndOrderData.orderResponse.entry.id}`,
+                // process.env.NODE_ENV === "development"
+                //     ? `http://localhost:3000/booking/${guestsAndOrderData.orderResponse.entry.id}`
+                //     : `https://experience.japanesemountainretreat.com.au/booking/${guestsAndOrderData.orderResponse.entry.id}`,
+                email: guestsAndOrderData.guestsData[0]?.entry.email,
                 field1label: "Order Id",
-                field1value:
-                    guestsAndOrderData.orderResponse.entry
-                        .id,
+                field1value: guestsAndOrderData.orderResponse.entry.id,
             });
-            const url =
-                process.env.NODE_ENV === "development"
-                    ? `https://pay.pinpayments.com/riiy/sc/test?${queryParams}`
-                    : `https://pay.pinpayments.com/riiy/sc?${queryParams}`;
+            const url = `https://pay.pinpayments.com/riiy/sc/test?${queryParams}`;
+
             window.location.href = url;
         },
         onError: () => {
@@ -71,9 +63,7 @@ const CheckoutUI = ({
     });
 
     const widths: SemanticWIDTHSNUMBER[] = [1, 7, 6, 2];
-    const [openPackages, setOpenPackages] = useState<
-        number[]
-    >([]);
+    const [openPackages, setOpenPackages] = useState<number[]>([]);
 
     const handleCollapsableClick: (
         event: React.MouseEvent<HTMLDivElement>,
@@ -85,73 +75,66 @@ const CheckoutUI = ({
         }
         if (openPackages.includes(+index)) {
             setOpenPackages(
-                openPackages.filter(
-                    (openIndex) => openIndex !== index
-                )
+                openPackages.filter((openIndex) => openIndex !== index)
             );
             return;
         }
         setOpenPackages([...openPackages, +index]);
     };
-    const items = cart.map(
-        (item: CartItem, index: number) => {
-            const isActive = openPackages.includes(index);
-            return (
-                <Grid.Row>
-                    <Grid.Column width={widths[1]}>
-                        {item.isPackage ? (
-                            <>
-                                <Accordion.Title
-                                    active={isActive}
-                                    index={index}
-                                    onClick={
-                                        handleCollapsableClick
-                                    }
-                                >
-                                    <Icon name="dropdown" />
-                                    {item.name}
-                                </Accordion.Title>
-                                <Accordion.Content
-                                    active={isActive}
-                                >
-                                    <List as="ol">
-                                        {item.servicesContent?.map(
-                                            (s) => (
-                                                <List.Item
-                                                    key={`summary_package_${item.id}-${s.id}`}
-                                                    as="li"
-                                                    value="-"
-                                                >
-                                                    <p>
-                                                        {
-                                                            s.name
-                                                        }
-                                                    </p>
-                                                </List.Item>
-                                            )
-                                        )}
-                                    </List>
-                                </Accordion.Content>
-                            </>
-                        ) : (
-                            item.name
-                        )}
-                    </Grid.Column>
-                    <Grid.Column width={widths[2]}>
-                        {item.adults}
-                    </Grid.Column>
-                    <Grid.Column width={widths[3]}>
-                        ${+(choosenAvailabilityData?.isPublicHolidayPrice? item.publicHolidayPrice|| item.price: item.price) * +item.adults}
-                    </Grid.Column>
-                </Grid.Row>
-            );
-        }
-    );
+    const items = cart.map((item: CartItem, index: number) => {
+        const isActive = openPackages.includes(index);
+        return (
+            <Grid.Row>
+                <Grid.Column width={widths[1]}>
+                    {item.isPackage ? (
+                        <>
+                            <Accordion.Title
+                                active={isActive}
+                                index={index}
+                                onClick={handleCollapsableClick}
+                            >
+                                <Icon name="dropdown" />
+                                {item.name}
+                            </Accordion.Title>
+                            <Accordion.Content active={isActive}>
+                                <List as="ol">
+                                    {item.servicesContent?.map((s) => (
+                                        <List.Item
+                                            key={`summary_package_${item.id}-${s.id}`}
+                                            as="li"
+                                            value="-"
+                                        >
+                                            <p>{s.name}</p>
+                                        </List.Item>
+                                    ))}
+                                </List>
+                            </Accordion.Content>
+                        </>
+                    ) : (
+                        item.name
+                    )}
+                </Grid.Column>
+                <Grid.Column width={widths[2]}>{item.adults}</Grid.Column>
+                <Grid.Column width={widths[3]}>
+                    $
+                    {+(choosenAvailabilityData?.isPublicHolidayPrice
+                        ? item.publicHolidayPrice || item.price
+                        : item.price) * +item.adults}
+                </Grid.Column>
+            </Grid.Row>
+        );
+    });
 
     const total = reduce(
         cart,
         (acc, s) => {
-            return acc + +(choosenAvailabilityData?.isPublicHolidayPrice? s.publicHolidayPrice || s.price: s.price) * s.adults;
+            return (
+                acc +
+                +(choosenAvailabilityData?.isPublicHolidayPrice
+                    ? s.publicHolidayPrice || s.price
+                    : s.price) *
+                    s.adults
+            );
         },
         0
     );
@@ -168,84 +151,60 @@ const CheckoutUI = ({
             servicesEndTimes,
             servicesNames,
         } = choosenAvailabilityData.metadata;
-        const arrivalDate =
-            choosenAvailabilityData.arrivalDate;
-        const allPanels = [servicesStartTimes[index]].map(
-            (startTimes, i) => {
-                return {
-                    key: `availability-time-${arrivalDate}-${i}`,
+        const arrivalDate = choosenAvailabilityData.arrivalDate;
+        const allPanels = [servicesStartTimes[index]].map((startTimes, i) => {
+            return {
+                key: `availability-time-${arrivalDate}-${i}`,
 
-                    title: `${moment(
-                        startTimes[0],
-                        "HH:mm"
-                    ).format("hh:mm A")} - ${moment(
-                        servicesEndTimes[index],
-                        "HH:mm"
-                    ).format("hh:mm A")} on the ${moment(
-                        choosenAvailabilityData.arrivalDate,
-                        "DD-MM-YYYY"
-                    ).format("Do MMMM")}`,
-                    content: {
-                        content: (
-                            <div
-                                style={{
-                                    padding: "5px 15px",
-                                }}
-                            >
-                                <List as="ol">
-                                    {startTimes.map(
-                                        (t, i) => {
-                                            return (
-                                                <List.Item
-                                                    key={`availability-desc-time-${arrivalDate}-${i}-${i}`}
-                                                    as="li"
-                                                    value="-"
-                                                >
-                                                    {`${
-                                                        servicesNames[
-                                                            i
-                                                        ]
-                                                    } : ${moment(
-                                                        t,
-                                                        "HH:mm"
-                                                    ).format(
-                                                        "hh:mm A"
-                                                    )} - ${moment(
-                                                        t,
-                                                        "HH:mm"
-                                                    )
-                                                        .add(
-                                                            servicesDuration[
-                                                                i
-                                                            ],
-                                                            "minutes"
-                                                        )
-                                                        .subtract(
-                                                            servicesCleanupDuration[
-                                                                i
-                                                            ],
-                                                            "minutes"
-                                                        )
-                                                        .format(
-                                                            "hh:mm A"
-                                                        )}`}
-                                                </List.Item>
-                                            );
-                                        }
-                                    )}
-                                </List>
-                            </div>
-                        ),
-                    },
-                };
-            }
-        );
-        return (
-            <Accordion
-                defaultActiveIndex={0}
-                panels={allPanels}
-            />
-        );
+                title: `${moment(startTimes[0], "HH:mm").format(
+                    "hh:mm A"
+                )} - ${moment(servicesEndTimes[index], "HH:mm").format(
+                    "hh:mm A"
+                )} on the ${moment(
+                    choosenAvailabilityData.arrivalDate,
+                    "DD-MM-YYYY"
+                ).format("Do MMMM")}`,
+                content: {
+                    content: (
+                        <div
+                            style={{
+                                padding: "5px 15px",
+                            }}
+                        >
+                            <List as="ol">
+                                {startTimes.map((t, i) => {
+                                    return (
+                                        <List.Item
+                                            key={`availability-desc-time-${arrivalDate}-${i}-${i}`}
+                                            as="li"
+                                            value="-"
+                                        >
+                                            {`${servicesNames[i]} : ${moment(
+                                                t,
+                                                "HH:mm"
+                                            ).format("hh:mm A")} - ${moment(
+                                                t,
+                                                "HH:mm"
+                                            )
+                                                .add(
+                                                    servicesDuration[i],
+                                                    "minutes"
+                                                )
+                                                .subtract(
+                                                    servicesCleanupDuration[i],
+                                                    "minutes"
+                                                )
+                                                .format("hh:mm A")}`}
+                                        </List.Item>
+                                    );
+                                })}
+                            </List>
+                        </div>
+                    ),
+                },
+            };
+        });
+        return <Accordion defaultActiveIndex={0} panels={allPanels} />;
     };
 
     return (
@@ -255,25 +214,16 @@ const CheckoutUI = ({
                     <Header as="h1" content="Summary" />
                     <Segment>
                         <Accordion>
-                            <Header
-                                as="h2"
-                                content="Experiences"
-                            />
+                            <Header as="h2" content="Experiences" />
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column
-                                        width={widths[1]}
-                                    >
+                                    <Grid.Column width={widths[1]}>
                                         Items
                                     </Grid.Column>
-                                    <Grid.Column
-                                        width={widths[2]}
-                                    >
+                                    <Grid.Column width={widths[2]}>
                                         Guests
                                     </Grid.Column>
-                                    <Grid.Column
-                                        width={widths[3]}
-                                    >
+                                    <Grid.Column width={widths[3]}>
                                         Subtotal
                                     </Grid.Column>
                                 </Grid.Row>
@@ -281,13 +231,8 @@ const CheckoutUI = ({
                                 {items}
                                 <Divider />
                                 <Grid.Row columns={4}>
-                                    <Grid.Column width={4}>
-                                        {" "}
-                                        Total
-                                    </Grid.Column>
-                                    <Grid.Column
-                                        width={10}
-                                    />
+                                    <Grid.Column width={4}> Total</Grid.Column>
+                                    <Grid.Column width={10} />
                                     <Grid.Column width={2}>
                                         ${total}
                                     </Grid.Column>
@@ -296,10 +241,7 @@ const CheckoutUI = ({
                         </Accordion>
                     </Segment>
                     <Segment>
-                        <Header
-                            as="h2"
-                            content="Timeline"
-                        />
+                        <Header as="h2" content="Timeline" />
                         {getAvailabilityList()}
                     </Segment>
                     <Segment>
@@ -330,28 +272,17 @@ const CheckoutUI = ({
                                     ),
                                 ],
                                 "email"
-                            ).map(
-                                (
-                                    {
-                                        email,
-                                        firstName,
-                                        lastName,
-                                    },
-                                    i
-                                ) => {
-                                    return (
-                                        <List.Item
-                                            key={`summary-guest-${email}-${i}`}
-                                            as="li"
-                                            value="-"
-                                        >
-                                            {firstName}{" "}
-                                            {lastName} (
-                                            {email})
-                                        </List.Item>
-                                    );
-                                }
-                            )}
+                            ).map(({ email, firstName, lastName }, i) => {
+                                return (
+                                    <List.Item
+                                        key={`summary-guest-${email}-${i}`}
+                                        as="li"
+                                        value="-"
+                                    >
+                                        {firstName} {lastName} ({email})
+                                    </List.Item>
+                                );
+                            })}
                         </List>
                     </Segment>
                     {isLoading && <Loader active />}
@@ -359,25 +290,17 @@ const CheckoutUI = ({
                         <Grid.Row centered columns={2}>
                             <Grid.Column textAlign="center">
                                 <Button
-                                    onClick={() =>
-                                        history.push(
-                                            "/details"
-                                        )
-                                    }
+                                    onClick={() => history.push("/details")}
                                     content="Back"
                                 />
                             </Grid.Column>
                             <Grid.Column textAlign="center">
-                                {!guestsAndOrderBody ||
-                                isLoading ? (
+                                {!guestsAndOrderBody || isLoading ? (
                                     <Button
                                         style={{
-                                            marginTop:
-                                                "12px",
+                                            marginTop: "12px",
                                         }}
-                                        color={
-                                            secondaryColor
-                                        }
+                                        color={secondaryColor}
                                         content={
                                             isLoading
                                                 ? "Loading..."
@@ -388,14 +311,11 @@ const CheckoutUI = ({
                                 ) : (
                                     <Button
                                         style={{
-                                            marginTop:
-                                                "12px",
+                                            marginTop: "12px",
                                         }}
                                         content="Proceed to payment"
                                         onClick={() =>
-                                            mutate(
-                                                guestsAndOrderBody
-                                            )
+                                            mutate(guestsAndOrderBody)
                                         }
                                         basic
                                     />
@@ -404,14 +324,13 @@ const CheckoutUI = ({
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column>
-                            {
-                                !isLoading && isError &&
+                                {!isLoading && isError && (
                                     <Message
                                         error
                                         header="There was some problem making your order."
                                         content="Please choose try again or contact us at info@japanesemountainretreat.com.au or +61 (03) 9737 0086"
                                     />
-                            }
+                                )}
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
